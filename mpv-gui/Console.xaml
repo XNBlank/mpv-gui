@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mpv_gui"
         mc:Ignorable="d"
-        Title="Console" Height="289.655" Width="595.69">
+        Title="Console" Height="289.655" Width="595.69" WindowStartupLocation="CenterScreen">
     <Grid Background="#FF191919">
-        <TextBox x:Name="consoleBox" TextWrapping="WrapWithOverflow" Background="Black" Foreground="White" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" IsUndoEnabled="False" FontFamily="Consolas" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Visible"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="32*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="consoleBox" TextWrapping="WrapWithOverflow" Background="Black" Foreground="White" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" IsUndoEnabled="False" FontFamily="Consolas" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

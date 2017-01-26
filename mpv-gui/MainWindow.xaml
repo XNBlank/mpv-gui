@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mpv_gui"
         mc:Ignorable="d"
-        Title="mpv-gui" Height="150" Width="355" ResizeMode="CanMinimize" Icon="mpv-logo.ico">
+        Title="mpv-gui" Height="150" Width="355" ResizeMode="CanMinimize" Icon="mpv-logo.ico" WindowStartupLocation="CenterScreen">
     <Grid Background="#FF1F1F1F">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>

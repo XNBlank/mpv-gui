@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mpv_gui"
         mc:Ignorable="d"
-        Title="More Options" Height="152.586" Width="403.449" Background="#FF1F1F1F" Foreground="White">
+        Title="More Options" Height="152.586" Width="403.449" Background="#FF1F1F1F" Foreground="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Button x:Name="button" Content="OK" HorizontalAlignment="Right" Margin="0,0,19,19" Width="75" IsDefault="True" Click="button_Click" Height="20" VerticalAlignment="Bottom"/>
         <TextBox x:Name="vidWidthBox" HorizontalAlignment="Left" Height="23" Margin="296,13,0,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource Settings}, Path=Default.vidWidth}" VerticalAlignment="Top" Width="79"/>

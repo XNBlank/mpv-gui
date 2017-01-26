@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mpv_gui"
         mc:Ignorable="d"
-        Title="About" Height="116.38" Width="313.793" ResizeMode="NoResize">
+        Title="About" Height="116.38" Width="313.793" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FF1F1F1F">
         <Image x:Name="image" HorizontalAlignment="Left" Height="54" Margin="69,13,0,0" VerticalAlignment="Top" Width="54" Source="mpv-logo.ico"/>
         <Label x:Name="label" Content="MPV-GUI" HorizontalAlignment="Left" Margin="127,13,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" Width="64"/>
