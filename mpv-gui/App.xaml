@@ -1,0 +1,11 @@
+﻿<Application x:Class="mpv_gui.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:mpv_gui"
+             xmlns:properties="clr-namespace:mpv_gui.Properties"
+             Exit="OnExit"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <properties:Settings x:Key="Settings" />
+    </Application.Resources>
+</Application>

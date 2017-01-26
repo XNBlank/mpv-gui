@@ -1,0 +1,225 @@
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace mpv_gui
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            Debug.WriteLine("test");
+        }
+
+        private void OnExit(object sender, ExitEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
+        Console console = new Console();
+        Options options;
+        public Process p;
+
+        private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+            string url = urlBox.Text;
+
+            p = new Process();
+
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.FileName = "CMD.EXE";
+
+            p.StartInfo.CreateNoWindow = true;
+
+            if (checkFullscreen.IsChecked == true)
+            {
+                url += " --fs";
+                p.StartInfo.CreateNoWindow = true;
+            }
+
+            if (checkNoAudio.IsChecked == true)
+            {
+                url += " --no-audio";
+                p.StartInfo.CreateNoWindow = true;
+            }
+
+            if (checkNoVideo.IsChecked == true)
+            {
+                url += " --no-video";
+                p.StartInfo.CreateNoWindow = false;
+            }
+
+            if (options.vidAutoCenterCheck.IsChecked == true)
+            {
+                url += String.Format(" --geometry={0}x{1}+50%+50%",Properties.Settings.Default.vidWidth,Properties.Settings.Default.vidHeight);
+            }
+            else if (options.vidAutoCenterCheck.IsChecked == false)
+            {
+                url += String.Format(" --geometry={0}x{1}+{2}+{3}", Properties.Settings.Default.vidWidth, Properties.Settings.Default.vidHeight, Properties.Settings.Default.vidPosX, Properties.Settings.Default.vidPosY);
+            }
+
+
+                // /c mpv
+                p.StartInfo.Arguments = "/c mpv " + url;
+            //this.Hide();
+            p.Start();
+
+            if (console.IsVisible)
+            {
+                p.OutputDataReceived += new DataReceivedEventHandler(MyProcOutputHandler);
+
+                p.ErrorDataReceived += new DataReceivedEventHandler(MyProcErrorHandler);
+            }
+
+            
+            p.BeginErrorReadLine();
+            p.BeginOutputReadLine();
+
+
+            //this.Show();
+        }
+
+        private void browseButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fs = new OpenFileDialog();
+            string path = string.Empty;
+            fs.Title = "Open Video File";
+            fs.DefaultExt = ".mp4";
+            fs.Filter = "MP4 Files|*.mp4|AVI Files|*.avi";
+            fs.InitialDirectory = @"C:\";
+            Nullable<bool> result = fs.ShowDialog();
+
+            if (result == true)
+            {
+                path = fs.FileName;
+                urlBox.Text = path;
+            }
+
+        }
+
+        private void pasteButton_Click(object sender, RoutedEventArgs e)
+        {
+            string tmp = Clipboard.GetText();
+            if(tmp == "")
+            {
+                MessageBoxResult box = MessageBox.Show("Clipboard did not contain a string.", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            } else
+            {
+                urlBox.Text = tmp;
+            }
+        }
+
+        private void buttonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.Show();
+        }
+
+        private void buttonConsole_Click(object sender, RoutedEventArgs e)
+        {
+            //console = new Console();
+            console.Show();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Current.Shutdown();
+        }
+
+        private void buttonClear_Click(object sender, RoutedEventArgs e)
+        {
+            urlBox.Text = "";
+        }
+
+        private void buttonOptions_Click(object sender, RoutedEventArgs e)
+        {
+            options = new Options();
+            options.Show();
+        }
+
+        private void MyProcOutputHandler(object sendingProcess,
+                    DataReceivedEventArgs ev)
+        {
+            if (!String.IsNullOrEmpty(ev.Data))
+            {
+                Debug.WriteLine(ev.Data);
+                string output = ev.Data;
+
+                if ((ev.Data.Contains("AV:")) || (ev.Data.Contains("V:")) || (ev.Data.Contains("A:")))
+                {
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        console.consoleBox.Text = console.consoleBox.Text.Remove(console.consoleBox.Text.LastIndexOf(Environment.NewLine));
+                        console.consoleBox.Text += output + "\r\n";
+                        console.consoleBox.ScrollToEnd();
+                    });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        
+                        console.consoleBox.Text += output + "\r\n";
+                        console.consoleBox.Text = console.consoleBox.Text.Remove(console.consoleBox.Text.LastIndexOf(Environment.NewLine));
+                        console.consoleBox.ScrollToEnd();
+                    });
+                }
+
+
+            }
+            else
+            {
+                p.CancelErrorRead();
+                p.CancelOutputRead();
+                p.Close();
+            }
+        }
+
+
+        private void MyProcErrorHandler(object sendingProcess,
+                    DataReceivedEventArgs ev)
+        {
+            if (!String.IsNullOrEmpty(ev.Data))
+            {
+                Debug.WriteLine(ev.Data);
+                string errorout = ev.Data;
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    console.consoleBox.Text += errorout + "\r\n";
+                    console.consoleBox.ScrollToEnd();
+                });
+
+            }
+            else
+            {
+                p.CancelErrorRead();
+                p.CancelOutputRead();
+                p.Close();
+            }
+        }
+
+    }
+}

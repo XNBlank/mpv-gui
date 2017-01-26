@@ -1,0 +1,12 @@
+﻿<Window x:Class="mpv_gui.Console"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mpv_gui"
+        mc:Ignorable="d"
+        Title="Console" Height="289.655" Width="595.69">
+    <Grid Background="#FF191919">
+        <TextBox x:Name="consoleBox" TextWrapping="WrapWithOverflow" Background="Black" Foreground="White" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" IsUndoEnabled="False" FontFamily="Consolas" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Visible"/>
+    </Grid>
+</Window>

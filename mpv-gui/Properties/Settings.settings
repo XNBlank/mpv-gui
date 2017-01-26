@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="mpv_gui.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="isFullscreen" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="noAudio" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="noVideo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="vidWidth" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1280</Value>
+    </Setting>
+    <Setting Name="vidHeight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">720</Value>
+    </Setting>
+    <Setting Name="vidPosX" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50%</Value>
+    </Setting>
+    <Setting Name="vidPosY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50%</Value>
+    </Setting>
+    <Setting Name="vidCenterPos" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
