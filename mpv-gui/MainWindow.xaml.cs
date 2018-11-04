@@ -1,18 +1,8 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace mpv_gui
@@ -25,8 +15,47 @@ namespace mpv_gui
         public MainWindow()
         {
             InitializeComponent();
-            Debug.WriteLine("test");
+            checkPath();
         }
+
+        private async void checkPath()
+        {
+            bool hasMPV = ExistsOnPath("mpv.exe");
+            bool hasYTDL = ExistsOnPath("youtube-dl.exe");
+            Download download = new Download();
+
+            if ( !hasMPV )
+            {
+                MessageBoxResult result = MessageBox.Show("MPV is not installed. Would you like to download it?",
+                "Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    download.setTitle("Downloading MPV");
+                    await download.start("https://mpv.srsfckn.biz/mpv-x86_64-20181002.7z", "mpv.7z", true);
+                }
+            }
+
+            Download download2 = new Download();
+
+            if ( !hasYTDL )
+            {
+                MessageBoxResult result = MessageBox.Show("YoutubeDL is not installed and is needed to play streamed content from sites like Youtube and Twitch. Would you like to download it?",
+                "Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    download2.setTitle("Downloading Youtube-DL");
+                    await download2.start("https://youtube-dl.org/downloads/latest/youtube-dl.exe", "youtube-dl.exe", false);
+                }
+            }
+
+        }
+
 
         private void OnExit(object sender, ExitEventArgs e)
         {
@@ -34,7 +63,7 @@ namespace mpv_gui
         }
 
         Console console = new Console();
-        Options options;
+        Options options = new Options();
         public Process p;
 
         private void submitButton_Click(object sender, RoutedEventArgs e)
@@ -78,8 +107,8 @@ namespace mpv_gui
             }
 
 
-                // /c mpv
-                p.StartInfo.Arguments = "/c mpv " + url;
+            // /c mpv
+            p.StartInfo.Arguments = "/c mpv " + url;
             //this.Hide();
             p.Start();
 
@@ -154,7 +183,6 @@ namespace mpv_gui
 
         private void buttonOptions_Click(object sender, RoutedEventArgs e)
         {
-            options = new Options();
             options.Show();
         }
 
@@ -220,6 +248,27 @@ namespace mpv_gui
                 p.Close();
             }
         }
+
+        public static bool ExistsOnPath(string fileName)
+        {
+            return GetFullPath(fileName) != null;
+        }
+
+        public static string GetFullPath(string fileName)
+        {
+            if (File.Exists(fileName))
+                return System.IO.Path.GetFullPath(fileName);
+
+            var values = Environment.GetEnvironmentVariable("PATH");
+            foreach (var path in values.Split(';'))
+            {
+                var fullPath = System.IO.Path.Combine(path, fileName);
+                if (File.Exists(fullPath))
+                    return fullPath;
+            }
+            return null;
+        }
+
 
     }
 }
