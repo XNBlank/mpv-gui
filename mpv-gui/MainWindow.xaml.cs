@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -12,6 +14,19 @@ namespace mpv_gui
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private Dictionary<string, string> _allowed_filetypes = new Dictionary<string, string>()
+        {
+            { "All Files", "*.*" },
+            { "MP4 Files", "*.mp4" },
+            { "AVI Files", "*.avi" },
+            { "MKV Files", "*.mkv" },
+            { "MOV Files", "*.mov" },
+            { "WEBM Files", "*.webm" },
+            { "MPEG Files", "*.mpeg" },
+            { "WMV Files", "*.wmv" }
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -133,7 +148,8 @@ namespace mpv_gui
             string path = string.Empty;
             fs.Title = "Open Video File";
             fs.DefaultExt = ".mp4";
-            fs.Filter = "MP4 Files|*.mp4|AVI Files|*.avi";
+            var ft_string = _allowed_filetypes.Select(d => string.Format("{0}|{1}", d.Key, string.Join(",", d.Value)));
+            fs.Filter = string.Join("|", ft_string);
             fs.InitialDirectory = @"C:\";
             Nullable<bool> result = fs.ShowDialog();
 
@@ -183,6 +199,7 @@ namespace mpv_gui
 
         private void buttonOptions_Click(object sender, RoutedEventArgs e)
         {
+            
             options.Show();
         }
 

@@ -28,6 +28,11 @@ namespace mpv_gui
         {
             this.Hide();
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
 
         private void vidAutoCenterCheck_Checked(object sender, RoutedEventArgs e)
         {

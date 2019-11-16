@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/.vs/mpv-gui/v16/Server/sqlite3
+/.vs
+/mpv-gui/bin
+/mpv-gui/obj
+/packages/SevenZipExtractor.1.0.14
